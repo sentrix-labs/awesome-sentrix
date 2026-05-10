@@ -41,9 +41,10 @@ A curated list of official resources, developer tools, infrastructure, applicati
 
 ### Mainnet
 
-- Network Name: `Sentrix Mainnet`
+- Network Name: `Sentrix Chain`
 - Chain ID: `7119`
 - Currency Symbol: `SRX`
+- RPC URL: `https://rpc.sentrixchain.com`
 - Explorer: [scan.sentrixchain.com](https://scan.sentrixchain.com)
 
 ### Testnet
@@ -51,7 +52,8 @@ A curated list of official resources, developer tools, infrastructure, applicati
 - Network Name: `Sentrix Testnet`
 - Chain ID: `7120`
 - Currency Symbol: `SRX`
-- Explorer: [scan.sentrixchain.com](https://scan.sentrixchain.com)
+- RPC URL: `https://testnet-rpc.sentrixchain.com`
+- Explorer: [scan-testnet.sentrixchain.com](https://scan-testnet.sentrixchain.com)
 - Faucet: [faucet.sentrixchain.com](https://faucet.sentrixchain.com)
 
 ## Core Protocol
@@ -98,11 +100,35 @@ A curated list of official resources, developer tools, infrastructure, applicati
 
 ## Tutorials
 
-Official tutorials should be added here as they become available.
+### Add Sentrix to MetaMask
+
+Sentrix Chain is EVM-compatible, so mainnet and testnet both add as custom networks in MetaMask. Open **Settings → Networks → Add a network → Add a network manually** and use the values below.
+
+#### Sentrix Chain (mainnet)
+
+| Field | Value |
+| --- | --- |
+| Network name | `Sentrix Chain` |
+| New RPC URL | `https://rpc.sentrixchain.com` |
+| Chain ID | `7119` |
+| Currency symbol | `SRX` |
+| Block explorer URL | `https://scan.sentrixchain.com` |
+
+#### Sentrix Testnet
+
+| Field | Value |
+| --- | --- |
+| Network name | `Sentrix Testnet` |
+| New RPC URL | `https://testnet-rpc.sentrixchain.com` |
+| Chain ID | `7120` |
+| Currency symbol | `SRX` |
+| Block explorer URL | `https://scan-testnet.sentrixchain.com` |
+| Faucet | `https://faucet.sentrixchain.com` |
+
+Use the [Sentrix Faucet](https://faucet.sentrixchain.com) to request testnet SRX after adding Sentrix Testnet.
 
 Recommended tutorial topics:
 
-- Add Sentrix to MetaMask
 - Get testnet SRX from the faucet
 - Deploy a Solidity contract on Sentrix
 - Read Sentrix blocks with viem
