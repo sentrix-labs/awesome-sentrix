@@ -98,11 +98,35 @@ A curated list of official resources, developer tools, infrastructure, applicati
 
 ## Tutorials
 
-Official tutorials should be added here as they become available.
+### Add Sentrix to MetaMask
+
+Sentrix is EVM-compatible, so you can add the mainnet or testnet as a custom network in MetaMask. In MetaMask, open **Settings > Networks > Add a network > Add a network manually**, then enter the values below.
+
+#### Sentrix Mainnet
+
+| Field | Value |
+| --- | --- |
+| Network name | `Sentrix Mainnet` |
+| New RPC URL | `https://rpc.sentrixchain.com` |
+| Chain ID | `7119` |
+| Currency symbol | `SRX` |
+| Block explorer URL | `https://scan.sentrixchain.com` |
+
+#### Sentrix Testnet
+
+| Field | Value |
+| --- | --- |
+| Network name | `Sentrix Testnet` |
+| New RPC URL | `https://testnet-rpc.sentrixchain.com` |
+| Chain ID | `7120` |
+| Currency symbol | `SRX` |
+| Block explorer URL | `https://scan.sentrixchain.com` |
+| Faucet | `https://faucet.sentrixchain.com` |
+
+Use the [Sentrix Faucet](https://faucet.sentrixchain.com) to request testnet SRX after adding Sentrix Testnet. Screenshots are not available yet.
 
 Recommended tutorial topics:
 
-- Add Sentrix to MetaMask
 - Get testnet SRX from the faucet
 - Deploy a Solidity contract on Sentrix
 - Read Sentrix blocks with viem
