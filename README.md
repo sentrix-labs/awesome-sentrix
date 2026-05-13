@@ -1,13 +1,33 @@
-# Awesome Sentrix [![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re)
+# Awesome Sentrix [![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re) [![Last commit](https://img.shields.io/github/last-commit/sentrix-labs/awesome-sentrix?label=updated)](https://github.com/sentrix-labs/awesome-sentrix/commits/main) [![Secret scan](https://img.shields.io/github/actions/workflow/status/sentrix-labs/awesome-sentrix/gitleaks.yml?branch=main&label=secret-scan)](https://github.com/sentrix-labs/awesome-sentrix/actions/workflows/gitleaks.yml)
 
-A curated list of official resources, developer tools, infrastructure, applications, and guides for **Sentrix Chain**.
+> A curated list of official resources, developer tools, infrastructure, applications, and guides for **Sentrix Chain**.
 
-**Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling.
+<p align="center">
+  <a href="https://sentrixchain.com">Website</a> ·
+  <a href="https://scan.sentrixchain.com">Explorer</a> ·
+  <a href="https://faucet.sentrixchain.com">Faucet</a> ·
+  <a href="https://github.com/sentrix-labs/whitepaper">Whitepaper</a> ·
+  <a href="https://t.me/SentrixChain">Telegram</a> ·
+  <a href="https://x.com/sentrixchain">X</a>
+</p>
+
+**Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling. _Read this in [Bahasa Indonesia](README.id.md)._
 
 > This list focuses on official and actively maintained Sentrix resources. Alpha or in-development projects are marked clearly.
 
+## Who is this for?
+
+| You are… | Start at |
+| --- | --- |
+| **A Solidity developer** building dApps on Sentrix | [Developer Tools](#developer-tools) → [Tutorials](#tutorials) → [dApp Starter](https://github.com/SentrisCloud/dapp-starter) |
+| **A Rust developer** integrating with Sentrix nodes | [Rust SDK](https://github.com/SentrisCloud/sdk-rs) → [gRPC endpoints](#networks) |
+| **A node operator** running a validator or fullnode | [Running a Node](#running-a-node) |
+| **A user** trying out the chain | [Add Sentrix to MetaMask](#add-sentrix-to-metamask) → [Faucet](https://faucet.sentrixchain.com) → [Solux wallet](https://solux.sentriscloud.com) |
+| **A security researcher** looking for in-scope targets | [Security](#security) |
+
 ## Contents
 
+- [Who is this for?](#who-is-this-for)
 - [Start Here](#start-here)
 - [Official Links](#official-links)
 - [Networks](#networks)
@@ -204,15 +224,51 @@ networks: {
 
 For Sourcify verification, see the [`hardhat-verify`](https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify) plugin and point the Sourcify URL at `https://verify.sentrixchain.com`.
 
-Recommended tutorial topics:
+### Get testnet SRX from the faucet
 
-- Get testnet SRX from the faucet
-- Deploy a Solidity contract on Sentrix
-- Read Sentrix blocks with viem
-- Send an SRX transaction with ethers.js
-- Run a Sentrix node
-- Run a Sentrix validator
-- Verify contracts with Sourcify
+1. Open the [Sentrix Faucet](https://faucet.sentrixchain.com).
+2. Switch the network selector to **Sentrix Testnet**.
+3. Paste your EVM-compatible wallet address (for example, from MetaMask).
+4. Pass the Cloudflare Turnstile challenge.
+5. Submit the request. The tx hash appears below the form — open it in [scan-testnet.sentrixchain.com](https://scan-testnet.sentrixchain.com) to confirm finalization.
+
+The faucet drips a small amount per request and applies a per-address cooldown. Wait out the cooldown if you need more.
+
+### Read Sentrix blocks with viem
+
+```ts
+import { createPublicClient, http } from 'viem';
+
+const sentrix = {
+  id: 7119,
+  name: 'Sentrix Chain',
+  network: 'sentrix',
+  nativeCurrency: { name: 'Sentrix', symbol: 'SRX', decimals: 18 },
+  rpcUrls: { default: { http: ['https://rpc.sentrixchain.com'] } },
+} as const;
+
+const client = createPublicClient({ chain: sentrix, transport: http() });
+
+const block = await client.getBlock();
+console.log(`block ${block.number} has ${block.transactions.length} txs`);
+
+const balance = await client.getBalance({
+  address: '0x0000000000000000000000000000000000000000',
+});
+console.log(`balance: ${balance} wei`);
+```
+
+For testnet, swap `id` to `7120` and the RPC URL to `https://testnet-rpc.sentrixchain.com`.
+
+### More tutorials
+
+These are tracked as open issues — pull requests welcome:
+
+- Deploy a Solidity contract on Sentrix (covered partially by [dApp Starter](https://github.com/SentrisCloud/dapp-starter))
+- Send an SRX transaction with viem / ethers.js
+- Run a Sentrix fullnode
+- Run a Sentrix validator (see [Running a Node](#running-a-node) and [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16))
+- Verify contracts with Sourcify (covered by [Foundry config](#foundry-config))
 
 ## Security
 
