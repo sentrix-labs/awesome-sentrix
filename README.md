@@ -528,29 +528,61 @@ The faucet drips a small amount per request and applies a per-address cooldown. 
 
 ### Read Sentrix blocks with viem
 
+Once [wevm/viem#4603](https://github.com/wevm/viem/pull/4603) merges, the chain config ships built-in:
+
 ```ts
-import { createPublicClient, http } from 'viem';
+import { createPublicClient, http } from 'viem'
+import { sentrix } from 'viem/chains'  // also: sentrixTestnet
 
-const sentrix = {
-  id: 7119,
-  name: 'Sentrix Chain',
-  network: 'sentrix',
-  nativeCurrency: { name: 'Sentrix', symbol: 'SRX', decimals: 18 },
-  rpcUrls: { default: { http: ['https://rpc.sentrixchain.com'] } },
-} as const;
+const client = createPublicClient({ chain: sentrix, transport: http() })
 
-const client = createPublicClient({ chain: sentrix, transport: http() });
-
-const block = await client.getBlock();
-console.log(`block ${block.number} has ${block.transactions.length} txs`);
-
-const balance = await client.getBalance({
-  address: '0x0000000000000000000000000000000000000000',
-});
-console.log(`balance: ${balance} wei`);
+const block = await client.getBlock()
+console.log(`block ${block.number} has ${block.transactions.length} txs`)
 ```
 
-For testnet, swap `id` to `7120` and the RPC URL to `https://testnet-rpc.sentrixchain.com`.
+Until then, inline the chain config:
+
+```ts
+import { createPublicClient, http, defineChain } from 'viem'
+
+export const sentrix = defineChain({
+  id: 7119,
+  name: 'Sentrix Chain',
+  nativeCurrency: { name: 'Sentrix', symbol: 'SRX', decimals: 18 },
+  rpcUrls: { default: { http: ['https://rpc.sentrixchain.com'] } },
+  blockExplorers: { default: { name: 'SentrixScan', url: 'https://scan.sentrixchain.com' } },
+})
+
+const client = createPublicClient({ chain: sentrix, transport: http() })
+const block = await client.getBlock()
+const balance = await client.getBalance({ address: '0x0000000000000000000000000000000000000000' })
+```
+
+For testnet, use `id: 7120` and `https://testnet-rpc.sentrixchain.com`.
+
+### Connect a wallet with wagmi
+
+`wagmi` is the React hooks layer on top of viem. Configure once and every `useAccount` / `useReadContract` / `useWriteContract` hook in the app gets Sentrix automatically.
+
+```ts
+import { http, createConfig } from 'wagmi'
+import { sentrix, sentrixTestnet } from 'viem/chains'  // post-merge of viem #4603
+import { injected, walletConnect } from 'wagmi/connectors'
+
+export const config = createConfig({
+  chains: [sentrix, sentrixTestnet],
+  connectors: [
+    injected(),
+    walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID! }),
+  ],
+  transports: {
+    [sentrix.id]: http(),
+    [sentrixTestnet.id]: http(),
+  },
+})
+```
+
+For RainbowKit / ConnectKit / Reown AppKit (formerly Web3Modal) / RabbyKit, drop `sentrix` and `sentrixTestnet` into the same `chains` array — those pickers consume the viem chain registry directly.
 
 ### More tutorials
 
