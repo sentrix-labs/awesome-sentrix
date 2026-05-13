@@ -34,12 +34,17 @@
 - [Core Protocol](#core-protocol)
 - [Developer Tools](#developer-tools)
 - [Smart Contracts](#smart-contracts)
+- [Tokenomics](#tokenomics)
 - [Infrastructure](#infrastructure)
 - [Bridges](#bridges)
 - [Applications](#applications)
 - [Wallets](#wallets)
 - [Running a Node](#running-a-node)
+- [Governance](#governance)
+- [API Reference](#api-reference)
+- [Documentation](#documentation)
 - [Tutorials](#tutorials)
+- [Grants and Ecosystem](#grants-and-ecosystem)
 - [Security](#security)
 - [Status Notes](#status-notes)
 - [Contributing](#contributing)
@@ -125,6 +130,30 @@ Verified live (`eth_getCode` non-empty on the listed chain). Full source-of-trut
 | Multicall3 | `0xFd4b34b5763f54a580a0d9f7997A2A993ef9ceE9` | `0x7900826De548425c6BE56caEbD4760AB0155Cd54` |
 | TokenFactory | `0xc753199b723649ab92c6db8A45F158921CFDEe49` | `0x7A2992af0d4979aDD076347666023d66d29276Fc` |
 | SentrixSafe | `0x6272dC0C842F05542f9fF7B5443E93C0642a3b26` | `0xc9D7a61D7C2F428F6A055916488041fD00532110` |
+
+## Tokenomics
+
+SRX has a hard cap of **315,000,000** post the tokenomics-v2 fork (mainnet activation `h=640800`, 2026-04-26). The economic shape mirrors Bitcoin's halving curve, scaled for Sentrix's 1-second blocks.
+
+| Field | Value |
+| --- | --- |
+| Hard cap | 315,000,000 SRX |
+| Premine | 63,000,000 SRX (20%) — Founder 21M, Ecosystem 21M, Early Validator 10.5M, Reserve 10.5M |
+| Block rewards | up to 252,000,000 SRX (80%) |
+| Initial reward | 1 SRX per block |
+| Halving | every 126,000,000 blocks (~4 years at 1-second blocks, BTC parity) |
+| Smallest unit | `sentri` (1 SRX = 10⁸ sentri, u64 internal) |
+| Fee model | 50% burn / 50% validator |
+| Live circulating | [`api.sentrixchain.com/chain/info`](https://api.sentrixchain.com/chain/info) returns `circulating_supply_srx` |
+
+Full breakdown of native coin mechanics, staking, reward escrow, token standards, and airdrop rules:
+
+- [SRX coin spec](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/SRX.md)
+- [Tokenomics overview](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/OVERVIEW.md)
+- [Staking](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/STAKING.md)
+- [Token standards](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/TOKEN_STANDARDS.md)
+- [Reward escrow](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/REWARD_ESCROW.md)
+- [Airdrop mechanics](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/AIRDROP_MECHANICS.md)
 
 ## Infrastructure
 
@@ -253,6 +282,91 @@ The deep operator material lives in `sentrix/docs/operations/`:
 
 For incident coordination and onboarding questions, email **`validators@sentrixchain.com`**. Closes [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16).
 
+## Governance
+
+Sentrix Chain runs **permissioned-onboarding** today: the consensus is open and the binary is the same one anyone can build, but admission to the active validator set is co-signed by the chain admin. The plan is to migrate from a single-key authority to N-of-M as the validator base grows.
+
+| Surface | Mechanism today | Target |
+| --- | --- | --- |
+| Validator set | Admin co-signs activation height for each onboarded validator | On-chain admission tied to self-stake + slashing |
+| Canonical contract upgrades | Contracts are immutable; "deploy v2 + migrate" is the upgrade path | Same — immutability is deliberate |
+| Safe-governed actions | `SentrixSafe` on both networks is currently 1-of-1 with a single authority signer | N-of-M as co-signers are recruited |
+| Slashing / jailing | Liveness + double-sign evidence dispatched on-chain via `SubmitEvidence` and `JailEvidenceBundle` | Same |
+
+Authority signer addresses, Safe migration history, and verification commands live in the canonical contracts repo at [`canonical-contracts/docs/ADDRESSES.md`](https://github.com/sentrix-labs/canonical-contracts/blob/main/docs/ADDRESSES.md). Multisig design and threat model: [`sentrix/docs/security/MULTISIG.md`](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/MULTISIG.md).
+
+## API Reference
+
+The native node speaks four namespaces on a single port:
+
+| Namespace | Examples |
+| --- | --- |
+| `eth_` | `eth_chainId`, `eth_blockNumber`, `eth_getBalance`, `eth_getCode`, `eth_sendRawTransaction`, `eth_call` — Ethereum-compatible (MetaMask, ethers.js, viem, web3.js, hardhat) |
+| `net_` | Network info |
+| `web3_` | Client version |
+| `sentrix_` | Native operations — validators, BFT, staking, delegations, finality, jail evidence |
+
+REST surface (60+ endpoints, full list at [`api.sentrixchain.com`](https://api.sentrixchain.com)):
+
+- `/chain/info`, `/chain/blocks`, `/chain/blocks/{height}`
+- `/transactions`, `/transactions/{txid}`, `/mempool`
+- `/accounts/{address}`, `/accounts/{address}/balance`, `/accounts/{address}/code`, `/accounts/{address}/nonce`
+- `/address/{address}`, `/address/{address}/history`
+- `/staking/validators`, `/validators`, `/epoch/current`
+- `/tokens`, `/tokens/{contract}`
+- `/sentrix_status`, `/sentrix_status_extended`, `/health`, `/metrics`
+
+Deep references in the core repo:
+
+- [API_REFERENCE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/API_REFERENCE.md) — full JSON-RPC + REST method coverage.
+- [API_ENDPOINTS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/API_ENDPOINTS.md) — endpoint catalog with examples.
+- [GRPC.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/GRPC.md) — Tonic gRPC + gRPC-Web (`sentrix.v1.Sentrix`).
+- [WEBSOCKET_SUBSCRIPTIONS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/WEBSOCKET_SUBSCRIPTIONS.md) — `eth_subscribe` + `sentrix_subscribe` channels.
+- [TRACE_RPC_SPEC.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/TRACE_RPC_SPEC.md) — debug/trace methods.
+- [EIP1559_SPEC.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/EIP1559_SPEC.md) — fee market spec.
+
+## Documentation
+
+The core repo's `docs/` tree is organized by topic:
+
+### Architecture
+
+- [OVERVIEW.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/OVERVIEW.md) - System-level architecture.
+- [CONSENSUS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/CONSENSUS.md) - DPoS + BFT consensus design.
+- [EVM.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/EVM.md) - EVM adapter, revm internals.
+- [NETWORKING.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/NETWORKING.md) - libp2p, Noise XX, Kademlia, Gossipsub layers.
+- [STATE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/STATE.md) - Binary sparse Merkle tree, MDBX storage.
+- [TRANSACTIONS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/architecture/TRANSACTIONS.md) - Native and EVM transaction lifecycle.
+
+### Operations
+
+Full operations index: [`sentrix/docs/operations/`](https://github.com/sentrix-labs/sentrix/tree/main/docs/operations). Highlights:
+
+- [DEVELOPER_QUICKSTART.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/DEVELOPER_QUICKSTART.md) - Build + run a node in five minutes.
+- [MONITORING.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/MONITORING.md) - Liveness, lag, mempool signals.
+- [OBSERVABILITY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/OBSERVABILITY.md) - Prometheus metrics + dashboards.
+- [CONTRACT_VERIFICATION.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/CONTRACT_VERIFICATION.md) - Sourcify-based contract verification flow.
+- [SMART_CONTRACT_GUIDE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/SMART_CONTRACT_GUIDE.md) - Deploy via Remix end-to-end.
+- [EMERGENCY_ROLLBACK.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/EMERGENCY_ROLLBACK.md) - Incident response procedures.
+
+### Roadmap
+
+- [PHASE1.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE1.md) - Phase 1 milestones.
+- [PHASE2.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE2.md) - Phase 2 milestones.
+- [PHASE3.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE3.md) - Phase 3 milestones.
+- [CHANGELOG.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/CHANGELOG.md) - Release history.
+
+### Security
+
+- [MULTISIG.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/MULTISIG.md) - SentrixSafe ownership and threshold design.
+- [ATTACK_VECTORS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/ATTACK_VECTORS.md) - Threat model.
+- [AUDIT_SUMMARY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/AUDIT_SUMMARY.md) - Audit history overview.
+- [SECURITY_REPORT.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/SECURITY_REPORT.md) - Detailed security report.
+
+### Governance
+
+- [GOVERNANCE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/GOVERNANCE.md) - Governance principles and decision-making model.
+
 ## Tutorials
 
 ### Add Sentrix to MetaMask
@@ -371,6 +485,21 @@ These are tracked as open issues — pull requests welcome:
 - Run a Sentrix fullnode
 - Run a Sentrix validator (see [Running a Node](#running-a-node) and [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16))
 - Verify contracts with Sourcify (covered by [Foundry config](#foundry-config))
+
+## Grants and Ecosystem
+
+Sentrix Labs and SentrisCloud run separate contact lanes for each kind of partnership:
+
+| Lane | Email | What it's for |
+| --- | --- | --- |
+| Grants | `grants@sentrixchain.com` | Ecosystem grant proposals, build-on-Sentrix funding |
+| Builders | `builders@sentrixchain.com` | dApp inquiries, integration questions, technical onboarding |
+| Validators | `validators@sentrixchain.com` | Validator activation, ops coordination, incident response |
+| Partnerships | `partners@sentriscloud.com` | Exchange listings, infrastructure providers, business deals |
+| Security | `security@sentrixchain.com` | Vulnerability disclosure (see [Security](#security)) |
+| General support | `support@sentrixchain.com` | User-facing support |
+
+For Founder / maintainer direct sponsorship, see the **Sponsor** link on the [Sentrix Labs profile](https://github.com/sentrix-labs).
 
 ## Security
 
