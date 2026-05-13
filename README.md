@@ -1,6 +1,6 @@
 # Awesome Sentrix [![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re) [![Last commit](https://img.shields.io/github/last-commit/sentrix-labs/awesome-sentrix?label=updated)](https://github.com/sentrix-labs/awesome-sentrix/commits/main) [![Secret scan](https://img.shields.io/github/actions/workflow/status/sentrix-labs/awesome-sentrix/gitleaks.yml?branch=main&label=secret-scan)](https://github.com/sentrix-labs/awesome-sentrix/actions/workflows/gitleaks.yml)
 
-> A curated list of official resources, developer tools, infrastructure, applications, and guides for **Sentrix Chain**.
+> A curated list of resources, developer tools, infrastructure, applications, and guides for **Sentrix Chain** — both first-party (Sentrix Labs / SentrisCloud) and community-built projects.
 
 <p align="center">
   <a href="https://sentrixchain.com">Website</a> ·
@@ -14,7 +14,7 @@
 
 **Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 Blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling. _Read this in [Bahasa Indonesia](README.id.md)._
 
-> This list focuses on official and actively maintained Sentrix resources. Alpha or in-development projects are marked clearly.
+> This list welcomes both first-party and community projects that are publicly accessible, actively maintained, and directly relevant to Sentrix Chain. Alpha or in-development projects are marked clearly. Building on Sentrix? Submit your project via PR — see [Contributing](#contributing).
 
 ## Who is this for
 
@@ -669,17 +669,21 @@ Open a PR to [`sentrix-labs/token-list`](https://github.com/sentrix-labs/token-l
 
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome — from anyone building on, integrating with, or running infrastructure for Sentrix Chain.
+
+**Building on Sentrix?** Submit your project via PR. The list groups projects by category (Applications, Wallets, Bridges, Developer Tools, Client Libraries, Templates, Indexers, Infrastructure) — open a PR adding your entry to the section that fits. Use the existing entries as a format reference.
 
 Good contributions include:
 
-- Sentrix tutorials
-- RPC examples
-- SDK examples
-- validator guides
-- dApp templates
-- wallet integration notes
-- explorer/indexer improvements
-- corrections for outdated or broken links
+- dApps, launchpads, DEXes, NFT platforms, and other applications running on Sentrix.
+- Wallets, browser extensions, and signing tools that support Sentrix Chain.
+- SDKs and client libraries in any language.
+- Validator services, RPC providers, and infrastructure tooling.
+- Bridges and cross-chain integrations.
+- Indexers, explorers, and data services.
+- Tutorials, RPC examples, SDK examples, validator guides.
+- Corrections for outdated or broken links.
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+**Quality bar:** publicly accessible, directly related to Sentrix Chain, actively maintained, not misleading, not purely promotional. Pre-launch projects are fine if marked clearly (`Alpha`, `Early`, `In development`).
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the full submission format and review process.
