@@ -33,6 +33,9 @@
 - [Networks](#networks)
 - [Core Protocol](#core-protocol)
 - [Developer Tools](#developer-tools)
+- [Client Libraries](#client-libraries)
+- [Templates](#templates)
+- [Indexers](#indexers)
 - [Smart Contracts](#smart-contracts)
 - [Tokenomics](#tokenomics)
 - [Infrastructure](#infrastructure)
@@ -40,9 +43,11 @@
 - [Applications](#applications)
 - [Wallets](#wallets)
 - [Running a Node](#running-a-node)
+- [Monitoring and Observability](#monitoring-and-observability)
 - [Governance](#governance)
 - [API Reference](#api-reference)
 - [Documentation](#documentation)
+- [Roadmap](#roadmap)
 - [Tutorials](#tutorials)
 - [Grants and Ecosystem](#grants-and-ecosystem)
 - [Security](#security)
@@ -106,19 +111,38 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 
 ## Developer Tools
 
-- [dApp Starter](https://github.com/SentrisCloud/dapp-starter) - End-to-end starter for deploying and interacting with contracts on Sentrix.
-- [TypeScript SDK](https://github.com/SentrisCloud/sdk-ts) - SDK for interacting with Sentrix EVM, native APIs, and BFT channels.
-- [Rust SDK](https://github.com/SentrisCloud/sdk-rs) - Typed Rust clients for native REST, EVM (alloy), gRPC (tonic), and secp256k1 wallet/signing. `Early`
-- [Sentrix gRPC-Web Client](https://github.com/SentrisCloud/sentrix-grpc-wasm) - Rust + WebAssembly gRPC-Web client packaged via wasm-pack, for browser dApps. `Early`
-- [Token List](https://github.com/sentrix-labs/token-list) - Canonical Uniswap-token-list-v1 registry for Sentrix mainnet (7119) and testnet (7120).
-- [Indexer](https://github.com/SentrisCloud/indexer) - Postgres-backed REST indexer for blocks, transactions, logs, tokens, and native chain data. `Phase 1 / scaffold`
+General-purpose developer tools live here. Language-specific SDKs are in [Client Libraries](#client-libraries), Solidity starters in [Templates](#templates), and indexing infrastructure in [Indexers](#indexers).
+
+- [Token List](https://github.com/sentrix-labs/token-list) - Canonical Uniswap-token-list-v1 registry for Sentrix mainnet (`7119`) and testnet (`7120`).
+- [Brand Kit](https://github.com/sentrix-labs/brand-kit) - Logos, icons, marks for dApp UIs that integrate Sentrix.
+
+## Client Libraries
+
+### TypeScript
+
+- [sdk-ts](https://github.com/SentrisCloud/sdk-ts) - Typed wrappers around the EVM JSON-RPC, native REST, and WebSocket subscription helpers.
+
+### Rust
+
+- [sdk-rs](https://github.com/SentrisCloud/sdk-rs) - Typed clients for native REST, EVM (via alloy), gRPC (via tonic), and secp256k1 wallet/signing. `Early`
+
+### WebAssembly (browser)
+
+- [sentrix-grpc-wasm](https://github.com/SentrisCloud/sentrix-grpc-wasm) - Rust + WebAssembly gRPC-Web client packaged via wasm-pack — usable from any browser dApp without a Node middleman. `Early`
+
+## Templates
+
+- [dApp Starter](https://github.com/SentrisCloud/dapp-starter) - Minimal Hardhat + viem dApp starter. Deploy ERC-20, wrap SRX, verify against Sourcify. End-to-end example for both networks.
+- [dApp Starter Contracts](https://github.com/SentrisCloud/dapp-starter/tree/main/contracts) - Example Solidity contracts for deployment on Sentrix.
+
+## Indexers
+
+- [Indexer](https://github.com/SentrisCloud/indexer) - Postgres-backed REST indexer for blocks, transactions, logs, tokens, and native chain data. Etherscan-API-compatible. `Phase 1 / scaffold`
 
 ## Smart Contracts
 
 - [Canonical Contracts](https://github.com/sentrix-labs/canonical-contracts) - WSRX, Multicall3, SentrixSafe, and TokenFactory.
 - [Sentrix DEX](https://github.com/sentrix-labs/sentrix-dex) - AMM and liquidity infrastructure for SRX ecosystem markets.
-- [Token List](https://github.com/sentrix-labs/token-list) - Uniswap-token-list-v1 registry of recognized tokens on Sentrix Chain.
-- [dApp Starter Contracts](https://github.com/SentrisCloud/dapp-starter/tree/main/contracts) - Example Solidity contracts for deployment on Sentrix.
 
 ### Deployed canonical addresses
 
@@ -282,6 +306,34 @@ The deep operator material lives in `sentrix/docs/operations/`:
 
 For incident coordination and onboarding questions, email **`validators@sentrixchain.com`**. Closes [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16).
 
+## Monitoring and Observability
+
+Sentrix nodes ship Prometheus metrics and structured status endpoints out of the box. Public surfaces are also available for off-host monitoring.
+
+### Local (on the node)
+
+| Endpoint | What it returns |
+| --- | --- |
+| `GET /health` | 200 OK if the process is responsive. |
+| `GET /sentrix_status` | Latest height, sync state, active validator count, uptime seconds, build version. |
+| `GET /sentrix_status_extended` | Status with extra runtime fields. |
+| `GET /metrics` | Prometheus-format metrics for scraping. |
+
+### Public
+
+| Endpoint | What it returns |
+| --- | --- |
+| [`api.sentrixchain.com/sentrix_status`](https://api.sentrixchain.com/sentrix_status) | Mainnet status |
+| [`testnet-api.sentrixchain.com/sentrix_status`](https://testnet-api.sentrixchain.com/sentrix_status) | Testnet status |
+| [`api.sentrixchain.com/chain/info`](https://api.sentrixchain.com/chain/info) | Live circulating supply, max supply, active validators, mempool size, next block reward |
+| [`api.sentrixchain.com/staking/validators`](https://api.sentrixchain.com/staking/validators) | Active validator set |
+| [`api.sentrixchain.com/epoch/current`](https://api.sentrixchain.com/epoch/current) | Current epoch, validator set, rewards |
+
+### Reference docs
+
+- [MONITORING.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/MONITORING.md) - What to watch: liveness, lag, mempool signals, threshold guidance.
+- [OBSERVABILITY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/OBSERVABILITY.md) - Prometheus scrape config, Grafana dashboard wiring.
+
 ## Governance
 
 Sentrix Chain runs **permissioned-onboarding** today: the consensus is open and the binary is the same one anyone can build, but admission to the active validator set is co-signed by the chain admin. The plan is to migrate from a single-key authority to N-of-M as the validator base grows.
@@ -349,13 +401,6 @@ Full operations index: [`sentrix/docs/operations/`](https://github.com/sentrix-l
 - [SMART_CONTRACT_GUIDE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/SMART_CONTRACT_GUIDE.md) - Deploy via Remix end-to-end.
 - [EMERGENCY_ROLLBACK.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/EMERGENCY_ROLLBACK.md) - Incident response procedures.
 
-### Roadmap
-
-- [PHASE1.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE1.md) - Phase 1 milestones.
-- [PHASE2.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE2.md) - Phase 2 milestones.
-- [PHASE3.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE3.md) - Phase 3 milestones.
-- [CHANGELOG.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/CHANGELOG.md) - Release history.
-
 ### Security
 
 - [MULTISIG.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/MULTISIG.md) - SentrixSafe ownership and threshold design.
@@ -366,6 +411,15 @@ Full operations index: [`sentrix/docs/operations/`](https://github.com/sentrix-l
 ### Governance
 
 - [GOVERNANCE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/GOVERNANCE.md) - Governance principles and decision-making model.
+
+## Roadmap
+
+Sentrix Chain's roadmap is tracked as four phase docs in the core repo. Each phase is independently scoped — the docs list completion criteria, not just intent.
+
+- [Phase 1](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE1.md) - Mainnet readiness — consensus, EVM compatibility, validator set, base contracts.
+- [Phase 2](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE2.md) - Ecosystem buildout — bridges, SDKs, DEX, indexer, explorer.
+- [Phase 3](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/PHASE3.md) - Decentralization — multi-sig admin, broader validator onboarding, governance handoff.
+- [CHANGELOG](https://github.com/sentrix-labs/sentrix/blob/main/docs/roadmap/CHANGELOG.md) - Release history with what shipped in each tag.
 
 ## Tutorials
 
