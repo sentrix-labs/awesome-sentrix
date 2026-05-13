@@ -51,7 +51,10 @@
 - [Tutorials](#tutorials)
 - [Grants and Ecosystem](#grants-and-ecosystem)
 - [Security](#security)
+- [Audits](#audits)
 - [Status Notes](#status-notes)
+- [FAQ](#faq)
+- [Glossary](#glossary)
 - [Contributing](#contributing)
 
 ## Start Here
@@ -565,6 +568,25 @@ Report vulnerabilities privately.
 
 Core repos ship a `SECURITY.md` with the disclosure timeline, severity tiers, scope, and safe-harbor terms. See [`sentrix-labs/sentrix/SECURITY.md`](https://github.com/sentrix-labs/sentrix/blob/main/SECURITY.md) for the canonical example.
 
+## Audits
+
+**External audit status:** no third-party audit firm has reviewed Sentrix Chain code yet. Treat the codebase accordingly when sizing exposure.
+
+Internal review posture:
+
+- Multiple rounds of internal code review (SECURITY_AUDIT_V11 is the most recent — 39 files, ~6,500 LoC).
+- Topical audits on BFT consensus, EVM integration and gas accounting, dependency supply chain, CI/CD posture, validator infrastructure, and tokenomics correctness.
+- `cargo audit` and `gitleaks` gate every PR.
+- `slither` and `mythril` gate every Solidity PR.
+
+Canonical hub (audit history, scope, methodology):
+
+- [AUDIT_SUMMARY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/AUDIT_SUMMARY.md) - Navigation index for all security material.
+- [SECURITY_AUDIT_V11.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/SECURITY_AUDIT_V11.md) - Most recent code review.
+- [SECURITY_REPORT.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/SECURITY_REPORT.md) - Cumulative summary.
+- [PENTEST_RESULTS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/PENTEST_RESULTS.md) - Penetration test methodology + raw results.
+- [ATTACK_VECTORS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/ATTACK_VECTORS.md) - Threat model.
+
 ## Status Notes
 
 - CoinBlast is currently marked as `Alpha`.
@@ -572,6 +594,76 @@ Core repos ship a `SECURITY.md` with the disclosure timeline, severity tiers, sc
 - Solux Mobile is `In development`.
 - The indexer is `Phase 1 / scaffold`.
 - Some older app repositories under `sentrix-labs` are archived because they were consolidated into `SentrisCloud/frontend`.
+
+## FAQ
+
+### What is Sentrix Chain?
+
+A Layer-1 Blockchain written in Rust with EVM compatibility. 1-second blocks, instant BFT finality, DPoS consensus, and a fixed 315M SRX supply on a 4-year halving curve. Solidity tools (Foundry, Hardhat, MetaMask, viem, ethers.js) connect natively via JSON-RPC.
+
+### Why Rust if the chain is EVM-compatible?
+
+The execution layer is EVM (via `revm`) so Solidity contracts run unmodified, but everything around it — consensus, storage, networking, RPC, gRPC — is Rust. The choice is about safety and performance of the surrounding system, not about asking developers to write Rust contracts.
+
+### What is the difference between SRX and WSRX?
+
+`SRX` is the native gas asset (no contract — it's the chain coin). `WSRX` is the canonical ERC-20 wrapper deployed at fixed addresses on both networks (see [Deployed canonical addresses](#deployed-canonical-addresses)). Wrap when an EVM-side flow needs an ERC-20 (DEX swaps, bridge collateral). Unwrap to get native SRX back.
+
+### Is mainnet stable?
+
+Mainnet is live and producing blocks (see [`/sentrix_status`](https://api.sentrixchain.com/sentrix_status) for current height + uptime). The codebase is under active development — internal review only, no third-party audit yet. Treat exposure accordingly.
+
+### How do I get testnet SRX?
+
+Open [`faucet.sentrixchain.com`](https://faucet.sentrixchain.com), switch to Sentrix Testnet, paste an EVM address, pass Turnstile, submit. Full walkthrough in [Tutorials → Get testnet SRX](#get-testnet-srx-from-the-faucet).
+
+### Can I run my own validator?
+
+Yes. The binary is open and the same one anyone can build. Joining the active set is co-signed by the chain admin today (see [Governance](#governance)). Hardware minimums, install one-liner, and onboarding flow are in [Running a Node](#running-a-node).
+
+### What is BFT finality?
+
+Once a block has at least 2/3 + 1 validator votes, it is finalized — no reorgs after that point. Different from Bitcoin / Ethereum probabilistic finality, where you wait for confirmations. Subscribe to `sentrix_finalized` over WSS to receive finalization events (see [WSS subscriptions](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/WEBSOCKET_SUBSCRIPTIONS.md)).
+
+### What is "permissioned-onboarding"?
+
+The validator set is open in code but admission is gated by an admin signature today. The plan is to migrate from a single-key authority to N-of-M as the validator base grows. See [Governance](#governance).
+
+### How do I bridge to or from Sentrix?
+
+A Hyperlane v3 bridge moves SRX between Sentrix Testnet and Sepolia via the WSRX wrap path. See [Bridges](#bridges) for the route table and status. Mainnet-out bridges are not deployed yet.
+
+### Has the code been audited externally?
+
+Not yet. Internal audits are documented under [Audits](#audits). External audit will be commissioned when budget and scope align — no committed timeline.
+
+### How do I list a token on the canonical token list?
+
+Open a PR to [`sentrix-labs/token-list`](https://github.com/sentrix-labs/token-list) with the token's contract address (deployed on mainnet `7119` or testnet `7120`), symbol, decimals, and logo URI. PRs that add tokens without a deployed contract are closed.
+
+## Glossary
+
+| Term | Meaning |
+| --- | --- |
+| `SRX` | Native gas asset of Sentrix Chain. |
+| `WSRX` | Canonical ERC-20 wrapper of SRX, deployed at fixed addresses on mainnet and testnet. |
+| `sentri` | Smallest unit: `1 SRX = 10^8 sentri`. All internal arithmetic is `u64` in `sentri`. |
+| BFT | Byzantine Fault Tolerant. Consensus tolerates up to 1/3 dishonest validators while still finalizing blocks. |
+| DPoS | Delegated Proof of Stake. Token holders delegate stake to validators who produce blocks. |
+| Voyager | Codename for the current consensus engine (DPoS + BFT). Activated as the mainnet protocol mode. |
+| Halving | Block-reward halving every 126M blocks (~4 years at 1-second blocks). BTC-parity schedule. |
+| Premine | The 63M SRX (20% of cap) allocated at genesis to Founder, Ecosystem, Early Validator, and Reserve buckets. |
+| Self-stake | A validator's own bonded SRX. Minimum 15,000 SRX to be considered for activation. |
+| Jailing | A validator that misses liveness or double-signs is jailed (removed from the active set) via on-chain evidence dispatch. |
+| Slashing | Stake confiscation that accompanies severe jail events (e.g. double-sign). |
+| Authority signer | The current single-key admin EOA that co-signs validator activations and Safe-governed actions. |
+| `SentrixSafe` | Canonical Safe contract on each network. Currently 1-of-1 with the authority signer; targets N-of-M. |
+| MDBX | The memory-mapped key-value store backing `chain.db`. Used by Reth and Erigon for the same reason — high read throughput for the trie. |
+| `revm` | The Rust EVM implementation used as Sentrix's execution adapter. |
+| libp2p | The peer-to-peer networking stack. Noise XX for encryption, Kademlia for discovery, Gossipsub for messages. |
+| Sourcify | The contract-verification standard Sentrix uses. Self-hosted at [`verify.sentrixchain.com`](https://verify.sentrixchain.com). |
+| NoopIsm | A Hyperlane Interchain Security Module that accepts any message. Used in the testnet bridge today; production target is MultisigIsm. |
+| MultisigIsm | The Hyperlane ISM that requires N-of-M validator signatures on bridge messages — production target. |
 
 ## Contributing
 
