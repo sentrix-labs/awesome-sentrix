@@ -84,6 +84,8 @@
 
 ## Networks
 
+> **One-click add to MetaMask:** [chainlist.org/?search=sentrix](https://chainlist.org/?search=sentrix) — auto-configures the network using the entries below. Sentrix Chain is registered with [`ethereum-lists/chains`](https://github.com/ethereum-lists/chains/blob/master/_data/chains/eip155-7119.json), so it also flows into viem, wagmi, RainbowKit, Web3Modal, and RabbyKit chain pickers automatically.
+
 JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`) or at the canonical `/rpc` path. The bare host also serves a self-documenting endpoint manifest as `GET /`. Native namespaces: `eth_`, `net_`, `web3_`, and `sentrix_` (validators, BFT, staking, delegations, finality).
 
 ### Mainnet
@@ -443,7 +445,9 @@ Sentrix Chain's roadmap is tracked as four phase docs in the core repo. Each pha
 
 ### Add Sentrix to MetaMask
 
-Sentrix Chain is EVM-compatible, so mainnet and testnet both add as custom networks in MetaMask. Open **Settings → Networks → Add a network → Add a network manually** and use the values below.
+**Fastest path:** visit [chainlist.org/?search=sentrix](https://chainlist.org/?search=sentrix), connect MetaMask, click **Add to MetaMask** on the network you want. Sentrix is registered in [`ethereum-lists/chains`](https://github.com/ethereum-lists/chains) so the same one-click flow works in any wallet picker that consumes that registry.
+
+**Manual fallback:** Sentrix Chain is EVM-compatible, so mainnet and testnet both add as custom networks in MetaMask. Open **Settings → Networks → Add a network → Add a network manually** and use the values below.
 
 #### Sentrix Chain (mainnet)
 
