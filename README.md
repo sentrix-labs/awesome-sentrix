@@ -1,6 +1,23 @@
-# Awesome Sentrix [![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re) [![Last commit](https://img.shields.io/github/last-commit/sentrix-labs/awesome-sentrix?label=updated)](https://github.com/sentrix-labs/awesome-sentrix/commits/main) [![Secret scan](https://img.shields.io/github/actions/workflow/status/sentrix-labs/awesome-sentrix/gitleaks.yml?branch=main&label=secret-scan)](https://github.com/sentrix-labs/awesome-sentrix/actions/workflows/gitleaks.yml)
+<p align="center">
+  <a href="https://sentrixchain.com">
+    <img src="https://cdn.jsdelivr.net/gh/sentrix-labs/brand-kit@master/png-transparent/sentrix-256.png" alt="Sentrix Chain" width="128">
+  </a>
+</p>
 
-> A curated list of resources, developer tools, infrastructure, applications, and guides for **Sentrix Chain** — both first-party (Sentrix Labs / SentrisCloud) and community-built projects.
+<h1 align="center">Awesome Sentrix</h1>
+
+<p align="center">
+  <a href="https://awesome.re"><img src="https://awesome.re/badge-flat.svg" alt="Awesome"></a>
+  <a href="https://github.com/sentrix-labs/awesome-sentrix/commits/main"><img src="https://img.shields.io/github/last-commit/sentrix-labs/awesome-sentrix?label=updated&color=8A5A11" alt="Last commit"></a>
+  <a href="https://github.com/sentrix-labs/awesome-sentrix/actions/workflows/gitleaks.yml"><img src="https://img.shields.io/github/actions/workflow/status/sentrix-labs/awesome-sentrix/gitleaks.yml?branch=main&label=secret-scan" alt="Secret scan"></a>
+  <a href="https://github.com/sentrix-labs/awesome-sentrix/actions/workflows/link-check.yml"><img src="https://img.shields.io/github/actions/workflow/status/sentrix-labs/awesome-sentrix/link-check.yml?branch=main&label=links" alt="Link check"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-CC0--1.0-lightgrey" alt="License"></a>
+</p>
+
+<p align="center">
+  <b>A curated list for <a href="https://sentrixchain.com">Sentrix Chain</a></b><br>
+  Rust-based, EVM-compatible Layer-1. Resources, tooling, infrastructure, apps, and guides — both first-party and community-built.
+</p>
 
 <p align="center">
   <a href="https://sentrixchain.com">Website</a> ·
@@ -12,51 +29,39 @@
   <a href="https://x.com/sentrixchain">X</a>
 </p>
 
-**Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 Blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling. _Read this in [Bahasa Indonesia](README.id.md)._
+<p align="center">
+  <sub>Read this in <a href="README.id.md">Bahasa Indonesia</a></sub>
+</p>
 
-> This list welcomes both first-party and community projects that are publicly accessible, actively maintained, and directly relevant to Sentrix Chain. Alpha or in-development projects are marked clearly. Building on Sentrix? Submit your project via PR — see [Contributing](#contributing).
+---
+
+> This list welcomes both first-party and community projects that are publicly accessible, actively maintained, and directly relevant to Sentrix Chain. Alpha or in-development projects are marked clearly. **Building on Sentrix?** Submit your project via PR — see [Contributing](#contributing).
 
 ## Who is this for
 
 | You are… | Start at |
 | --- | --- |
-| **A Solidity developer** building dApps on Sentrix | [Developer Tools](#developer-tools) → [Tutorials](#tutorials) → [dApp Starter](https://github.com/SentrisCloud/dapp-starter) |
-| **A Rust developer** integrating with Sentrix nodes | [Rust SDK](https://github.com/SentrisCloud/sdk-rs) → [gRPC endpoints](#networks) |
-| **A node operator** running a validator or fullnode | [Running a Node](#running-a-node) |
-| **A user** trying out the chain | [Add Sentrix to MetaMask](#add-sentrix-to-metamask) → [Faucet](https://faucet.sentrixchain.com) → [Solux wallet](https://solux.sentriscloud.com) |
-| **A security researcher** looking for in-scope targets | [Security](#security) |
+| 🛠️ **A Solidity developer** building dApps on Sentrix | [Developer Tools](#developer-tools) → [Tutorials](#tutorials) → [dApp Starter](https://github.com/SentrisCloud/dapp-starter) |
+| 🦀 **A Rust developer** integrating with Sentrix nodes | [Rust SDK](https://github.com/SentrisCloud/sdk-rs) → [gRPC endpoints](#networks) |
+| 🖧 **A node operator** running a validator or fullnode | [Running a Node](#running-a-node) |
+| 👛 **A user** trying out the chain | [Add Sentrix to MetaMask](#add-sentrix-to-metamask) → [Faucet](https://faucet.sentrixchain.com) → [Solux wallet](https://solux.sentriscloud.com) |
+| 🔒 **A security researcher** looking for in-scope targets | [Security](#security) |
 
 ## Contents
 
-- [Who is this for](#who-is-this-for)
-- [Start Here](#start-here)
-- [Official Links](#official-links)
-- [Networks](#networks)
-- [Core Protocol](#core-protocol)
-- [Developer Tools](#developer-tools)
-- [Client Libraries](#client-libraries)
-- [Templates](#templates)
-- [Indexers](#indexers)
-- [Smart Contracts](#smart-contracts)
-- [Tokenomics](#tokenomics)
-- [Infrastructure](#infrastructure)
-- [Bridges](#bridges)
-- [Applications](#applications)
-- [Wallets](#wallets)
-- [Running a Node](#running-a-node)
-- [Monitoring and Observability](#monitoring-and-observability)
-- [Governance](#governance)
-- [API Reference](#api-reference)
-- [Documentation](#documentation)
-- [Roadmap](#roadmap)
-- [Tutorials](#tutorials)
-- [Grants and Ecosystem](#grants-and-ecosystem)
-- [Security](#security)
-- [Audits](#audits)
-- [Status Notes](#status-notes)
-- [FAQ](#faq)
-- [Glossary](#glossary)
-- [Contributing](#contributing)
+**Quickstart** — [Who is this for](#who-is-this-for) · [Start Here](#start-here) · [Official Links](#official-links) · [Networks](#networks)
+
+**Build** — [Core Protocol](#core-protocol) · [Developer Tools](#developer-tools) · [Client Libraries](#client-libraries) · [Templates](#templates) · [Indexers](#indexers) · [Smart Contracts](#smart-contracts) · [Tokenomics](#tokenomics)
+
+**Ecosystem** — [Infrastructure](#infrastructure) · [Bridges](#bridges) · [Applications](#applications) · [Wallets](#wallets)
+
+**Operate** — [Running a Node](#running-a-node) · [Monitoring and Observability](#monitoring-and-observability) · [Governance](#governance)
+
+**Reference** — [API Reference](#api-reference) · [Documentation](#documentation) · [Roadmap](#roadmap) · [Tutorials](#tutorials)
+
+**Community** — [Grants and Ecosystem](#grants-and-ecosystem) · [Security](#security) · [Audits](#audits) · [Status Notes](#status-notes) · [FAQ](#faq) · [Glossary](#glossary) · [Contributing](#contributing)
+
+---
 
 ## Start Here
 
@@ -105,6 +110,8 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 - gRPC: `grpc-testnet.sentrixchain.com:443` (service `sentrix.v1.Sentrix`)
 - Explorer: [scan-testnet.sentrixchain.com](https://scan-testnet.sentrixchain.com)
 - Faucet: [faucet.sentrixchain.com](https://faucet.sentrixchain.com)
+
+---
 
 ## Core Protocol
 
@@ -184,6 +191,8 @@ Full breakdown of native coin mechanics, staking, reward escrow, token standards
 - [Reward escrow](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/REWARD_ESCROW.md)
 - [Airdrop mechanics](https://github.com/sentrix-labs/sentrix/blob/main/docs/tokenomics/AIRDROP_MECHANICS.md)
 
+---
+
 ## Infrastructure
 
 - [SentrixScan](https://scan.sentrixchain.com) - Sentrix block explorer.
@@ -216,6 +225,8 @@ Full breakdown of native coin mechanics, staking, reward escrow, token standards
 - [Solux Web Wallet](https://solux.sentriscloud.com) - Browser-based self-custody wallet.
 - [Solux Mobile](https://github.com/SentrisCloud/solux) - Flutter mobile wallet for iOS and Android, self-custody and EVM-compatible. `In development`
 - MetaMask - Sentrix supports Ethereum-compatible wallet flows through EVM RPC.
+
+---
 
 ## Running a Node
 
@@ -351,6 +362,8 @@ Sentrix Chain runs **permissioned-onboarding** today: the consensus is open and 
 | Slashing / jailing | Liveness + double-sign evidence dispatched on-chain via `SubmitEvidence` and `JailEvidenceBundle` | Same |
 
 Authority signer addresses, Safe migration history, and verification commands live in the canonical contracts repo at [`canonical-contracts/docs/ADDRESSES.md`](https://github.com/sentrix-labs/canonical-contracts/blob/main/docs/ADDRESSES.md). Multisig design and threat model: [`sentrix/docs/security/MULTISIG.md`](https://github.com/sentrix-labs/sentrix/blob/main/docs/security/MULTISIG.md).
+
+---
 
 ## API Reference
 
@@ -545,6 +558,8 @@ These are tracked as open issues — pull requests welcome:
 - Run a Sentrix validator (see [Running a Node](#running-a-node) and [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16))
 - Verify contracts with Sourcify (covered by [Foundry config](#foundry-config))
 
+---
+
 ## Grants and Ecosystem
 
 Sentrix Labs and SentrisCloud run separate contact lanes for each kind of partnership:
@@ -687,3 +702,12 @@ Good contributions include:
 **Quality bar:** publicly accessible, directly related to Sentrix Chain, actively maintained, not misleading, not purely promotional. Pre-launch projects are fine if marked clearly (`Alpha`, `Early`, `In development`).
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) for the full submission format and review process.
+
+---
+
+<p align="center">
+  <sub>
+    Built with care for the <a href="https://sentrixchain.com">Sentrix Chain</a> ecosystem.<br>
+    Open under <a href="LICENSE">CC0-1.0</a> — copy, fork, remix freely.
+  </sub>
+</p>
