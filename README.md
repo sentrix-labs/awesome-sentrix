@@ -20,6 +20,7 @@ A curated list of official resources, developer tools, infrastructure, applicati
 - [Wallets](#wallets)
 - [Running a Node](#running-a-node)
 - [Tutorials](#tutorials)
+- [Security](#security)
 - [Status Notes](#status-notes)
 - [Contributing](#contributing)
 
@@ -38,6 +39,8 @@ A curated list of official resources, developer tools, infrastructure, applicati
 - [SentrisCloud GitHub](https://github.com/SentrisCloud) - User-facing apps, tooling, and ecosystem infrastructure.
 - [SentrisCloud](https://sentriscloud.com) - Ecosystem application hub.
 - [X / Twitter](https://x.com/sentrixchain) - Official Sentrix Chain updates.
+- [Telegram — @SentrixChain](https://t.me/SentrixChain) - Sentrix Chain channel.
+- [Telegram — @SentrixCommunity](https://t.me/SentrixCommunity) - Sentrix community chat.
 
 ## Networks
 
@@ -157,6 +160,50 @@ Sentrix Chain is EVM-compatible, so mainnet and testnet both add as custom netwo
 
 Use the [Sentrix Faucet](https://faucet.sentrixchain.com) to request testnet SRX after adding Sentrix Testnet.
 
+### Foundry config
+
+Drop the RPC endpoints into `foundry.toml`:
+
+```toml
+[rpc_endpoints]
+sentrix = "https://rpc.sentrixchain.com"
+sentrix_testnet = "https://testnet-rpc.sentrixchain.com"
+```
+
+Sentrix uses Sourcify for contract verification at `https://verify.sentrixchain.com`. After deploying, verify with:
+
+```bash
+forge verify-contract \
+  <ADDRESS> \
+  src/MyContract.sol:MyContract \
+  --chain-id 7119 \
+  --verifier sourcify \
+  --verifier-url https://verify.sentrixchain.com
+```
+
+Use `--chain-id 7120` for testnet.
+
+### Hardhat config
+
+Add the networks to `hardhat.config.ts`:
+
+```ts
+networks: {
+  sentrix: {
+    url: "https://rpc.sentrixchain.com",
+    chainId: 7119,
+    accounts: [process.env.PRIVATE_KEY!],
+  },
+  sentrixTestnet: {
+    url: "https://testnet-rpc.sentrixchain.com",
+    chainId: 7120,
+    accounts: [process.env.PRIVATE_KEY!],
+  },
+},
+```
+
+For Sourcify verification, see the [`hardhat-verify`](https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify) plugin and point the Sourcify URL at `https://verify.sentrixchain.com`.
+
 Recommended tutorial topics:
 
 - Get testnet SRX from the faucet
@@ -166,6 +213,16 @@ Recommended tutorial topics:
 - Run a Sentrix node
 - Run a Sentrix validator
 - Verify contracts with Sourcify
+
+## Security
+
+Report vulnerabilities privately.
+
+- Protocol issues (chain, contracts, bridge, SDKs): [security@sentrixchain.com](mailto:security@sentrixchain.com) or a [private GitHub Security Advisory](https://github.com/sentrix-labs/sentrix/security/advisories/new).
+- Application issues (explorer, wallet, faucet, launchpad): [security@sentriscloud.com](mailto:security@sentriscloud.com).
+- Network or validator abuse: [abuse@sentrixchain.com](mailto:abuse@sentrixchain.com).
+
+Core repos ship a `SECURITY.md` with the disclosure timeline, severity tiers, scope, and safe-harbor terms. See [`sentrix-labs/sentrix/SECURITY.md`](https://github.com/sentrix-labs/sentrix/blob/main/SECURITY.md) for the canonical example.
 
 ## Status Notes
 
