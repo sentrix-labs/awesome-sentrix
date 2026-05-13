@@ -11,11 +11,11 @@
   <a href="https://x.com/sentrixchain">X</a>
 </p>
 
-**Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling. _Read this in [Bahasa Indonesia](README.id.md)._
+**Sentrix Chain** is a Rust-based, EVM-compatible Layer-1 Blockchain focused on protocol engineering, validator infrastructure, RPC compatibility, staking, and developer tooling. _Read this in [Bahasa Indonesia](README.id.md)._
 
 > This list focuses on official and actively maintained Sentrix resources. Alpha or in-development projects are marked clearly.
 
-## Who is this for?
+## Who is this for
 
 | You are… | Start at |
 | --- | --- |
@@ -27,7 +27,7 @@
 
 ## Contents
 
-- [Who is this for?](#who-is-this-for)
+- [Who is this for](#who-is-this-for)
 - [Start Here](#start-here)
 - [Official Links](#official-links)
 - [Networks](#networks)
@@ -93,7 +93,7 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 
 ## Core Protocol
 
-- [Sentrix Core Node](https://github.com/sentrix-labs/sentrix) - Core Rust implementation of Sentrix Chain.
+- [Sentrix Core Node](https://github.com/sentrix-labs/sentrix) - Core Rust implementation of the Sentrix Layer-1 Blockchain.
 - [Whitepaper](https://github.com/sentrix-labs/whitepaper) - Sentrix Chain whitepaper and protocol narrative.
 - [Canonical Contracts](https://github.com/sentrix-labs/canonical-contracts) - Official EVM contracts including WSRX, Multicall3, SentrixSafe, and TokenFactory.
 - [Sentrix DEX Contracts](https://github.com/sentrix-labs/sentrix-dex) - Native AMM / DEX contracts for the Sentrix ecosystem.
@@ -104,7 +104,7 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 - [dApp Starter](https://github.com/SentrisCloud/dapp-starter) - End-to-end starter for deploying and interacting with contracts on Sentrix.
 - [TypeScript SDK](https://github.com/SentrisCloud/sdk-ts) - SDK for interacting with Sentrix EVM, native APIs, and BFT channels.
 - [Rust SDK](https://github.com/SentrisCloud/sdk-rs) - Typed Rust clients for native REST, EVM (alloy), gRPC (tonic), and secp256k1 wallet/signing. `Early`
-- [Sentrix gRPC-Web Client](https://github.com/SentrisCloud/sentrix-grpc-wasm) - Rust + WASM gRPC-Web client packaged via wasm-pack, for browser dApps. `Early`
+- [Sentrix gRPC-Web Client](https://github.com/SentrisCloud/sentrix-grpc-wasm) - Rust + WebAssembly gRPC-Web client packaged via wasm-pack, for browser dApps. `Early`
 - [Token List](https://github.com/sentrix-labs/token-list) - Canonical Uniswap-token-list-v1 registry for Sentrix mainnet (7119) and testnet (7120).
 - [Indexer](https://github.com/SentrisCloud/indexer) - Postgres-backed REST indexer for blocks, transactions, logs, tokens, and native chain data. `Phase 1 / scaffold`
 
@@ -129,7 +129,7 @@ Verified live (`eth_getCode` non-empty on the listed chain). Full source-of-trut
 ## Infrastructure
 
 - [SentrixScan](https://scan.sentrixchain.com) - Sentrix block explorer.
-- [Obsidian Engine (Explorer V2)](https://github.com/SentrisCloud/sentrix-explorer-v2) - Rust + WASM block explorer. Coexists with SentrixScan on a separate domain. `Early`
+- [Obsidian Engine (Explorer V2)](https://github.com/SentrisCloud/sentrix-explorer-v2) - Rust + WebAssembly block explorer. Coexists with SentrixScan on a separate domain. `Early`
 - [Sentrix Faucet](https://faucet.sentrixchain.com) - SRX faucet for supported networks.
 - [Indexer](https://github.com/SentrisCloud/indexer) - Indexer infrastructure for explorer and application data.
 - [SentrisCloud Frontend](https://github.com/SentrisCloud/frontend) - Monorepo for explorer, faucet, wallet, DEX, launchpad, airdrop, and websites.
