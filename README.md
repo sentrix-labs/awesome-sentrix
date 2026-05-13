@@ -8,6 +8,7 @@
   <a href="https://faucet.sentrixchain.com">Faucet</a> ·
   <a href="https://github.com/sentrix-labs/whitepaper">Whitepaper</a> ·
   <a href="https://t.me/SentrixChain">Telegram</a> ·
+  <a href="https://discord.gg/sentrixchain">Discord</a> ·
   <a href="https://x.com/sentrixchain">X</a>
 </p>
 
@@ -74,6 +75,7 @@
 - [X / Twitter](https://x.com/sentrixchain) - Official Sentrix Chain updates.
 - [Telegram — @SentrixChain](https://t.me/SentrixChain) - Sentrix Chain channel.
 - [Telegram — @SentrixCommunity](https://t.me/SentrixCommunity) - Sentrix community chat.
+- [Discord](https://discord.gg/sentrixchain) - Sentrix Discord server.
 
 ## Networks
 
