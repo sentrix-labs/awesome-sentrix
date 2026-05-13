@@ -1,0 +1,30 @@
+name: awesome-lint
+
+# Runs awesome-lint against README.md. Non-blocking — surfaces findings
+# in the workflow summary so the maintainer can fix incrementally. Same
+# policy as the gitleaks and link-check workflows in this repo.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: awesome-lint
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: '20'
+
+      - name: Run awesome-lint
+        run: npx --yes awesome-lint README.md || true
