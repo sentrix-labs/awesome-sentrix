@@ -72,6 +72,7 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 - Chain ID: `7119`
 - Currency Symbol: `SRX`
 - JSON-RPC: `https://rpc.sentrixchain.com` (also `https://rpc.sentrixchain.com/rpc`)
+- WebSocket: `wss://rpc.sentrixchain.com/ws` (`eth_subscribe` + `sentrix_subscribe` channels — `sentrix_finalized`, `sentrix_validatorSet`, `sentrix_tokenOps`, `sentrix_stakingOps`, `sentrix_jail`)
 - Native REST API: `https://api.sentrixchain.com` (60+ endpoints — `/chain/info`, `/chain/blocks`, `/validators`, `/staking/validators`, `/tokens`, `/accounts/{address}`, `/transactions`, `/mempool`, `/epoch/current`)
 - Live status: [`https://api.sentrixchain.com/sentrix_status`](https://api.sentrixchain.com/sentrix_status)
 - gRPC: `grpc.sentrixchain.com:443` (service `sentrix.v1.Sentrix`)
@@ -83,6 +84,7 @@ JSON-RPC URLs accept POSTs at the bare host (e.g. `https://rpc.sentrixchain.com`
 - Chain ID: `7120`
 - Currency Symbol: `SRX`
 - JSON-RPC: `https://testnet-rpc.sentrixchain.com` (also `https://testnet-rpc.sentrixchain.com/rpc`)
+- WebSocket: `wss://testnet-rpc.sentrixchain.com/ws`
 - Native REST API: `https://testnet-api.sentrixchain.com`
 - Live status: [`https://testnet-api.sentrixchain.com/sentrix_status`](https://testnet-api.sentrixchain.com/sentrix_status)
 - gRPC: `grpc-testnet.sentrixchain.com:443` (service `sentrix.v1.Sentrix`)
@@ -159,7 +161,14 @@ Verified live (`eth_getCode` non-empty on the listed chain). Full source-of-trut
 
 ## Running a Node
 
-Sentrix Chain validators are signer-only and run behind a firewall. Public RPC, JSON-RPC, and gRPC traffic is served by fullnodes that sit in front of the validator set.
+### Validator vs fullnode
+
+Sentrix Chain separates two roles:
+
+- **Validator** — signs blocks. Runs behind a firewall, exposes nothing public, and talks libp2p to other validators (and optionally to a private fullnode for relay).
+- **Fullnode** — relays the public JSON-RPC, WSS, native REST, and gRPC traffic that dApps and explorers hit. Sits in front of the validator set, on its own host where practical.
+
+The recommended shape is one validator per host plus a dedicated fullnode for public traffic. Validator hosts should never serve public RPC.
 
 ### Hardware minimums
 
@@ -196,14 +205,53 @@ Sentrix is permissioned-onboarding for now: anyone can run the binary, but joini
    - Ops contact (email or Telegram for incident coordination)
 3. An activation height comes back. After that height your validator appears in [`/staking/validators`](https://api.sentrixchain.com/staking/validators) and at [scan.sentrixchain.com/validators](https://scan.sentrixchain.com/validators).
 
-### References
+### Service management
 
-- [Sentrix Core Node](https://github.com/sentrix-labs/sentrix) - Build, configuration, runtime setup, validator/fullnode roles.
-- [Canonical Contracts](https://github.com/sentrix-labs/canonical-contracts) - Genesis-time contracts deployed alongside the chain.
-- [Live validator set](https://api.sentrixchain.com/staking/validators) - Current active validators (mainnet).
-- [Chain status](https://api.sentrixchain.com/sentrix_status) - Live height, sync state, validator count.
+The installer drops a systemd unit. Common operator commands:
 
-The consolidated operator handbook (recovery paths, monitoring playbooks, key rotation) is tracked in [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16).
+```bash
+sudo systemctl status sentrix
+sudo journalctl -u sentrix -f --since "1 hour ago"
+sudo systemctl restart sentrix
+```
+
+### Healthchecks (local)
+
+Hit your node's bind address (default `localhost:8545`):
+
+| Endpoint | What it returns |
+| --- | --- |
+| `GET /health` | 200 OK if the process is responsive |
+| `GET /sentrix_status` | latest height, sync state, active validator count |
+| `GET /metrics` | Prometheus-format metrics |
+
+### Inspect from anywhere
+
+Public surfaces work without a local node:
+
+```bash
+curl https://api.sentrixchain.com/sentrix_status      # mainnet height, sync, validator count
+curl https://api.sentrixchain.com/staking/validators  # active validator set
+curl https://api.sentrixchain.com/epoch/current       # current epoch
+curl https://api.sentrixchain.com/mempool             # mempool snapshot
+```
+
+### Operator handbook
+
+The deep operator material lives in `sentrix/docs/operations/`:
+
+| Topic | Document |
+| --- | --- |
+| Full runbook | [VALIDATOR_GUIDE.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/VALIDATOR_GUIDE.md) |
+| Step-by-step join | [VALIDATOR_ONBOARDING.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/VALIDATOR_ONBOARDING.md) |
+| What to watch | [MONITORING.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/MONITORING.md) |
+| Prometheus + dashboards | [OBSERVABILITY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/OBSERVABILITY.md) |
+| Incident response | [EMERGENCY_ROLLBACK.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/EMERGENCY_ROLLBACK.md) |
+| Testnet-specific recovery | [TESTNET_RECOVERY.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/TESTNET_RECOVERY.md) |
+| Network reference | [NETWORKS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/NETWORKS.md) |
+| WSS subscriptions | [WEBSOCKET_SUBSCRIPTIONS.md](https://github.com/sentrix-labs/sentrix/blob/main/docs/operations/WEBSOCKET_SUBSCRIPTIONS.md) |
+
+For incident coordination and onboarding questions, email **`validators@sentrixchain.com`**. Closes [#16](https://github.com/sentrix-labs/awesome-sentrix/issues/16).
 
 ## Tutorials
 
