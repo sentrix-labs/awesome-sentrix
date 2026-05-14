@@ -205,13 +205,16 @@ Full breakdown of native coin mechanics, staking, reward escrow, token standards
 
 ## Bridges
 
-- [Sentrix Bridge](https://github.com/sentrix-labs/sentrix-bridge) - Hyperlane v3 bridge for SRX. Uses WSRX wrap + HypERC20Collateral to move value across networks.
+- [Sentrix Bridge](https://github.com/sentrix-labs/sentrix-bridge) - Hyperlane v3 + LayerZero V2 bridge stack for SRX. Uses WSRX wrap + HypERC20Collateral path; HypNative path also functional after sentrix#580 close (2026-05-13). Also hosts the watcher + status API below.
+- [Bridge Watcher](https://github.com/sentrix-labs/sentrix-bridge/tree/main/watcher-rs) - Rust CLI that monitors route safety, NoopIsm exposure, MultisigIsm validator config, WSRX 1:1 collateral invariant, RPC health, stuck messages.
+- [Bridge Status API](https://bridge-api.sentrixchain.com) - HTTP status API for bridge state. Endpoints: `/health`, `/status`, `/routes`, `/messages`, `/unsafe-config`, `/fresh-user-flow`, `/readiness`. Source at [`api-rs/`](https://github.com/sentrix-labs/sentrix-bridge/tree/main/api-rs).
 
 ### Routes
 
 | Direction | Stack | Status |
 | --- | --- | --- |
-| Sentrix Testnet → Sepolia | Hyperlane v3 | Beta — manual relay, NoopIsm |
+| Sentrix Testnet → Sepolia | Hyperlane v3 | Beta — manual relay, NoopIsm (testnet/demo only) |
+| Sentrix Testnet ↔ <other testnets> | Hyperlane v3 | Planned — see [`docs/multichain-roadmap.md`](https://github.com/sentrix-labs/sentrix-bridge/blob/main/docs/multichain-roadmap.md) |
 
 ## Applications
 
@@ -346,6 +349,9 @@ Sentrix nodes ship Prometheus metrics and structured status endpoints out of the
 | [`api.sentrixchain.com/chain/info`](https://api.sentrixchain.com/chain/info) | Live circulating supply, max supply, active validators, mempool size, next block reward |
 | [`api.sentrixchain.com/staking/validators`](https://api.sentrixchain.com/staking/validators) | Active validator set |
 | [`api.sentrixchain.com/epoch/current`](https://api.sentrixchain.com/epoch/current) | Current epoch, validator set, rewards |
+| [`bridge-api.sentrixchain.com/readiness`](https://bridge-api.sentrixchain.com/readiness) | Bridge production-readiness checklist |
+| [`bridge-api.sentrixchain.com/unsafe-config`](https://bridge-api.sentrixchain.com/unsafe-config) | Routes still using NoopIsm or otherwise flagged unsafe |
+| [`bridge-api.sentrixchain.com/routes`](https://bridge-api.sentrixchain.com/routes) | All bridge routes with origin/destination/ISM type |
 
 ### Reference docs
 
