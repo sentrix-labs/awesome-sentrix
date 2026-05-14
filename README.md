@@ -151,6 +151,7 @@ General-purpose developer tools live here. Language-specific SDKs are in [Client
 
 ## Indexers
 
+- [indexer-rs](https://github.com/SentrisCloud/indexer-rs) - Rust indexer (newer). Pipelined parallel backfill. Currently mainnet primary; testnet still on TS.
 - [Indexer](https://github.com/SentrisCloud/indexer) - Postgres-backed REST indexer for blocks, transactions, logs, tokens, and native chain data. Etherscan-API-compatible. `Phase 1 / scaffold`
 
 ## Smart Contracts
