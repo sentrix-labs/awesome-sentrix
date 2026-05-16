@@ -79,7 +79,7 @@
 - [SentrisCloud](https://sentriscloud.com) - Ecosystem application hub.
 - [X / Twitter](https://x.com/sentrixchain) - Official Sentrix Chain updates.
 - [Telegram — @SentrixChain](https://t.me/SentrixChain) - Sentrix Chain channel.
-- [Telegram — @SentrixCommunity](https://t.me/SentrixCommunity) - Sentrix community chat.
+- [Telegram — @SentrixCommunity](https://t.me/Sentrix_Chain) - Sentrix community chat.
 - [Discord](https://discord.gg/sentrixchain) - Sentrix Discord server.
 
 ## Networks
