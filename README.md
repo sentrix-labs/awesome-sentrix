@@ -25,7 +25,7 @@
   <a href="https://faucet.sentrixchain.com">Faucet</a> ·
   <a href="https://github.com/sentrix-labs/whitepaper">Whitepaper</a> ·
   <a href="https://t.me/SentrixChain">Telegram</a> ·
-  <a href="https://discord.gg/sentrixchain">Discord</a> ·
+  <a href="https://discord.gg/B5GH7twSEZ">Discord</a> ·
   <a href="https://x.com/sentrixchain">X</a>
 </p>
 
